@@ -9,6 +9,7 @@ import hudson.views.ListViewColumn;
 import java.util.Iterator;
 import java.util.List;
 
+import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.StaplerRequest;
@@ -38,7 +39,7 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 	 * @return HTML String containing the Upstreamed/ Downstreamed jobs undert the
 	 *         Job (when available).
 	 */
-	public String getStreamInfo(Job job, int streamType) {
+	public String getStreamInfo(Job job, int streamType, String jobBaseUrl) {
 		if (!(job instanceof AbstractProject<?, ?>))
 			return "";
 
@@ -47,15 +48,15 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 		AbstractProject<?, ?> project = (AbstractProject<?, ?>) job;
 		if (streamType == UPSTREAM) {
 			expression
-					.append(getHTMLProjectInfo(project.getUpstreamProjects()));
+					.append(getHTMLProjectInfo(project.getUpstreamProjects(), jobBaseUrl));
 		} else if (streamType == DOWNSTREAM) {
 			expression.append(getHTMLProjectInfo(project
-					.getDownstreamProjects()));
+					.getDownstreamProjects(), jobBaseUrl));
 		}
 		return expression.toString();
 	}
 
-	private String getHTMLProjectInfo(List <AbstractProject> lst) {
+	private String getHTMLProjectInfo(List <AbstractProject> lst, String jobBaseUrl) {
     	StringBuilder processingString = new StringBuilder();
     	StringBuilder expression = new StringBuilder();
     	boolean firstElement = true;
@@ -64,8 +65,8 @@ public class UpDownStreamViewColumn extends ListViewColumn {
     		AbstractProject prj = itr.next();
     		if (!firstElement){
     			processingString.append("&nbsp");
-    		}    		
-    		String linkString = new String("<a href=\"" + prj.getUrl() + "\">" + prj.getName() + "</a>");    		
+    		}    
+    		String linkString = new String("<a href=\"" + jobBaseUrl + prj.getUrl() + "\">" + prj.getName() + "</a>");    		
     		if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
     			processingString.append(linkString);
     			
