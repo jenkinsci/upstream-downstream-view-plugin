@@ -101,7 +101,7 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 
 		@Override
 		public String getDisplayName() {
-			return "Upstream Downstream View Plugin";
+			return "Upstream Downstream Links";
 		}
 	};
 
