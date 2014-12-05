@@ -10,14 +10,13 @@ import hudson.views.ListViewColumn;
 import java.util.Iterator;
 import java.util.List;
 
-import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 
 import org.kohsuke.stapler.StaplerRequest;
 
 /**
  * UpstreamDownstreamViewColumn, this plugin allows used to see the two additional
- * colums containing the Upstreamed and Downstreamed jobs for the particular job. 
+ * columns containing the Upstream and Downstream jobs for the particular job. 
  * Additionally this plugin in the current version cut the column length to 50 chars
  *  in case if the job name summary length is less than the 50 or it put one job name
  *  in the column in case if the job name is fewer than 50 chars.
@@ -35,9 +34,9 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 
 	/**
 	 * This method will returns the HTML representation of the 
-	 * Upstreamed/Downstreamed jobs for the particular master job.
+	 * Upstream/Downstream jobs for the particular master job.
 	 *
-	 * @return HTML String containing the Upstreamed/ Downstreamed jobs undert the
+	 * @return HTML String containing the Upstream/Downstream jobs under the
 	 *         Job (when available).
 	 */
 	public String getStreamInfo(Job job, int streamType, String jobBaseUrl) {
@@ -110,7 +109,8 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 		}
 	};
 
-	public Descriptor<ListViewColumn> getDescriptor() {
+	@Override
+    public Descriptor<ListViewColumn> getDescriptor() {
 		return DESCRIPTOR;
 	}
 }
