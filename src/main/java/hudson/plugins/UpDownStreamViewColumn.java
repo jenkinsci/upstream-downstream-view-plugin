@@ -43,17 +43,15 @@ public class UpDownStreamViewColumn extends ListViewColumn {
         if (!(job instanceof AbstractProject<?, ?>))
             return "";
 
-        StringBuilder expression = new StringBuilder();
-
         AbstractProject<?, ?> project = (AbstractProject<?, ?>) job;
         if (streamType == UPSTREAM) {
-            expression
-                    .append(getHTMLProjectInfo(project.getUpstreamProjects(), jobBaseUrl));
-        } else if (streamType == DOWNSTREAM) {
-            expression.append(getHTMLProjectInfo(project
-                    .getDownstreamProjects(), jobBaseUrl));
+            return getHTMLProjectInfo(project.getUpstreamProjects(), jobBaseUrl);
         }
-        return expression.toString();
+        if (streamType == DOWNSTREAM) {
+            return getHTMLProjectInfo(project.getDownstreamProjects(), jobBaseUrl);
+        }
+
+        throw new IllegalArgumentException();
     }
 
     // TODO: there is no need to trim the job name to 50 since the name is breakable
@@ -61,11 +59,9 @@ public class UpDownStreamViewColumn extends ListViewColumn {
         StringBuilder processingString = new StringBuilder();
         StringBuilder expression = new StringBuilder();
         boolean firstElement = true;
-        Iterator <AbstractProject> itr = lst.iterator();
-        while(itr.hasNext()){
-            AbstractProject prj = itr.next();
+        for (AbstractProject prj: lst) {
             if (!firstElement){
-                processingString.append("&nbsp");
+                processingString.append("&nbsp;");
             }
             String linkString = String.format(
                     "<a class=\"model-link inside\" href=\"%s%s\">%s</a>",
@@ -74,7 +70,7 @@ public class UpDownStreamViewColumn extends ListViewColumn {
             if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
                 processingString.append(linkString);
 
-            } else if (processingString.length() < 1 && ((prj.getName().length()) > MAX_COLUMN_WIDTH)) {
+            } else if (processingString.length() < 1 && prj.getName().length() > MAX_COLUMN_WIDTH) {
                 processingString.append(linkString + "<br/>");
                 expression.append(processingString );
                 processingString = new StringBuilder();
