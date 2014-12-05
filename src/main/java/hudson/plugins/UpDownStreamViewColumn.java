@@ -67,8 +67,11 @@ public class UpDownStreamViewColumn extends ListViewColumn {
     		AbstractProject prj = itr.next();
     		if (!firstElement){
     			processingString.append("&nbsp");
-    		}    
-    		String linkString = "<a href=\"" + jobBaseUrl + prj.getUrl() + "\">" + Functions.breakableString(prj.getName()) + "</a>";
+    		}
+    		String linkString = String.format(
+    		        "<a class=\"model-link inside\" href=\"%s%s\">%s</a>",
+    		        jobBaseUrl, prj.getUrl(), Functions.breakableString(prj.getName())
+    		);
     		if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
     			processingString.append(linkString);
     			
