@@ -30,7 +30,6 @@ public class UpDownStreamViewColumn extends ListViewColumn {
     public static final int UPSTREAM = 1;
     public static final int DOWNSTREAM = 2;
     public static final String NOT_AVAILABLE = "N/A";
-    private static final int MAX_COLUMN_WIDTH = 50;
 
     /**
      * This method will returns the HTML representation of the
@@ -56,46 +55,26 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 
     // TODO: there is no need to trim the job name to 50 since the name is breakable
     private String getHTMLProjectInfo(List <AbstractProject> lst, String jobBaseUrl) {
-        StringBuilder processingString = new StringBuilder();
+        if (lst == null || lst.isEmpty()) return NOT_AVAILABLE;
+
         StringBuilder expression = new StringBuilder();
-        boolean firstElement = true;
+
         for (AbstractProject prj: lst) {
-            if (!firstElement){
-                processingString.append("&nbsp;");
-            }
             String linkString = String.format(
                     "<a class=\"model-link inside\" href=\"%s%s\">%s</a>",
                     jobBaseUrl, prj.getUrl(), Functions.breakableString(prj.getName())
             );
-            if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
-                processingString.append(linkString);
 
-            } else if (processingString.length() < 1 && prj.getName().length() > MAX_COLUMN_WIDTH) {
-                processingString.append(linkString + "<br/>");
-                expression.append(processingString );
-                processingString = new StringBuilder();
-            } else {
-                processingString.append("<br/>");
-                expression.append(processingString);
-                processingString = new StringBuilder();
-                processingString.append(linkString);
-            }
-            firstElement = false;
+            expression.append(linkString).append(' ');
         }
-        expression.trimToSize();
-        if (expression.length() < 1 && processingString.length() < 1) {
-            expression.append(NOT_AVAILABLE);
-        } else if (processingString.length() > 0) {
-            expression.append(processingString);
-        }
+
         return expression.toString();
     }
 
     @Extension
     public static final Descriptor<ListViewColumn> DESCRIPTOR = new Descriptor<ListViewColumn>() {
         @Override
-        public ListViewColumn newInstance(StaplerRequest req,
-                JSONObject formData) {
+        public ListViewColumn newInstance(StaplerRequest req, JSONObject formData) {
             return new UpDownStreamViewColumn();
         }
 
