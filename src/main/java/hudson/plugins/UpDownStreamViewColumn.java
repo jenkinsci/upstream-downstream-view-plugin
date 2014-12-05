@@ -16,7 +16,7 @@ import org.kohsuke.stapler.StaplerRequest;
 
 /**
  * UpstreamDownstreamViewColumn, this plugin allows used to see the two additional
- * columns containing the Upstream and Downstream jobs for the particular job. 
+ * columns containing the Upstream and Downstream jobs for the particular job.
  * Additionally this plugin in the current version cut the column length to 50 chars
  *  in case if the job name summary length is less than the 50 or it put one job name
  *  in the column in case if the job name is fewer than 50 chars.
