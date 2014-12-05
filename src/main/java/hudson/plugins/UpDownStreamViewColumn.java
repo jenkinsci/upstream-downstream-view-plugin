@@ -27,90 +27,90 @@ import org.kohsuke.stapler.StaplerRequest;
  */
 public class UpDownStreamViewColumn extends ListViewColumn {
 
-	public static final int UPSTREAM = 1;
-	public static final int DOWNSTREAM = 2;
-	public static final String NOT_AVAILABLE = "N/A";
-	private static final int MAX_COLUMN_WIDTH = 50;
+    public static final int UPSTREAM = 1;
+    public static final int DOWNSTREAM = 2;
+    public static final String NOT_AVAILABLE = "N/A";
+    private static final int MAX_COLUMN_WIDTH = 50;
 
-	/**
-	 * This method will returns the HTML representation of the 
-	 * Upstream/Downstream jobs for the particular master job.
-	 *
-	 * @return HTML String containing the Upstream/Downstream jobs under the
-	 *         Job (when available).
-	 */
-	public String getStreamInfo(Job job, int streamType, String jobBaseUrl) {
-		if (!(job instanceof AbstractProject<?, ?>))
-			return "";
+    /**
+     * This method will returns the HTML representation of the
+     * Upstream/Downstream jobs for the particular master job.
+     *
+     * @return HTML String containing the Upstream/Downstream jobs under the
+     *         Job (when available).
+     */
+    public String getStreamInfo(Job job, int streamType, String jobBaseUrl) {
+        if (!(job instanceof AbstractProject<?, ?>))
+            return "";
 
-		StringBuilder expression = new StringBuilder();
+        StringBuilder expression = new StringBuilder();
 
-		AbstractProject<?, ?> project = (AbstractProject<?, ?>) job;
-		if (streamType == UPSTREAM) {
-			expression
-					.append(getHTMLProjectInfo(project.getUpstreamProjects(), jobBaseUrl));
-		} else if (streamType == DOWNSTREAM) {
-			expression.append(getHTMLProjectInfo(project
-					.getDownstreamProjects(), jobBaseUrl));
-		}
-		return expression.toString();
-	}
+        AbstractProject<?, ?> project = (AbstractProject<?, ?>) job;
+        if (streamType == UPSTREAM) {
+            expression
+                    .append(getHTMLProjectInfo(project.getUpstreamProjects(), jobBaseUrl));
+        } else if (streamType == DOWNSTREAM) {
+            expression.append(getHTMLProjectInfo(project
+                    .getDownstreamProjects(), jobBaseUrl));
+        }
+        return expression.toString();
+    }
 
-	// TODO: there is no need to trim the job name to 50 since the name is breakable
-	private String getHTMLProjectInfo(List <AbstractProject> lst, String jobBaseUrl) {
-    	StringBuilder processingString = new StringBuilder();
-    	StringBuilder expression = new StringBuilder();
-    	boolean firstElement = true;
-    	Iterator <AbstractProject> itr = lst.iterator();
-    	while(itr.hasNext()){
-    		AbstractProject prj = itr.next();
-    		if (!firstElement){
-    			processingString.append("&nbsp");
-    		}
-    		String linkString = String.format(
-    		        "<a class=\"model-link inside\" href=\"%s%s\">%s</a>",
-    		        jobBaseUrl, prj.getUrl(), Functions.breakableString(prj.getName())
-    		);
-    		if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
-    			processingString.append(linkString);
-    			
-    		} else if (processingString.length() < 1 && ((prj.getName().length()) > MAX_COLUMN_WIDTH)) {
-    			processingString.append(linkString + "<br/>");
-    			expression.append(processingString );
-    			processingString = new StringBuilder();
-    		} else {
-    			processingString.append("<br/>");
-    			expression.append(processingString);
-    			processingString = new StringBuilder();
-    			processingString.append(linkString);
-    		}
-    		firstElement = false;
-    	}
-    	expression.trimToSize();
-    	if (expression.length() < 1 && processingString.length() < 1) {
-    		expression.append(NOT_AVAILABLE);
-    	} else if (processingString.length() > 0) {
-    		expression.append(processingString);
-    	}
-    	return expression.toString();
-    }	
-	
-	@Extension
-	public static final Descriptor<ListViewColumn> DESCRIPTOR = new Descriptor<ListViewColumn>() {
-		@Override
-		public ListViewColumn newInstance(StaplerRequest req,
-				JSONObject formData) {
-			return new UpDownStreamViewColumn();
-		}
+    // TODO: there is no need to trim the job name to 50 since the name is breakable
+    private String getHTMLProjectInfo(List <AbstractProject> lst, String jobBaseUrl) {
+        StringBuilder processingString = new StringBuilder();
+        StringBuilder expression = new StringBuilder();
+        boolean firstElement = true;
+        Iterator <AbstractProject> itr = lst.iterator();
+        while(itr.hasNext()){
+            AbstractProject prj = itr.next();
+            if (!firstElement){
+                processingString.append("&nbsp");
+            }
+            String linkString = String.format(
+                    "<a class=\"model-link inside\" href=\"%s%s\">%s</a>",
+                    jobBaseUrl, prj.getUrl(), Functions.breakableString(prj.getName())
+            );
+            if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
+                processingString.append(linkString);
 
-		@Override
-		public String getDisplayName() {
-			return "Upstream Downstream Links";
-		}
-	};
+            } else if (processingString.length() < 1 && ((prj.getName().length()) > MAX_COLUMN_WIDTH)) {
+                processingString.append(linkString + "<br/>");
+                expression.append(processingString );
+                processingString = new StringBuilder();
+            } else {
+                processingString.append("<br/>");
+                expression.append(processingString);
+                processingString = new StringBuilder();
+                processingString.append(linkString);
+            }
+            firstElement = false;
+        }
+        expression.trimToSize();
+        if (expression.length() < 1 && processingString.length() < 1) {
+            expression.append(NOT_AVAILABLE);
+        } else if (processingString.length() > 0) {
+            expression.append(processingString);
+        }
+        return expression.toString();
+    }
 
-	@Override
+    @Extension
+    public static final Descriptor<ListViewColumn> DESCRIPTOR = new Descriptor<ListViewColumn>() {
+        @Override
+        public ListViewColumn newInstance(StaplerRequest req,
+                JSONObject formData) {
+            return new UpDownStreamViewColumn();
+        }
+
+        @Override
+        public String getDisplayName() {
+            return "Upstream Downstream Links";
+        }
+    };
+
+    @Override
     public Descriptor<ListViewColumn> getDescriptor() {
-		return DESCRIPTOR;
-	}
+        return DESCRIPTOR;
+    }
 }
