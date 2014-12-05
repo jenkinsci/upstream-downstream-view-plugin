@@ -1,6 +1,7 @@
 package hudson.plugins;
 
 import hudson.Extension;
+import hudson.Functions;
 import hudson.model.Descriptor;
 import hudson.model.AbstractProject;
 import hudson.model.Job;
@@ -56,6 +57,7 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 		return expression.toString();
 	}
 
+	// TODO: there is no need to trim the job name to 50 since the name is breakable
 	private String getHTMLProjectInfo(List <AbstractProject> lst, String jobBaseUrl) {
     	StringBuilder processingString = new StringBuilder();
     	StringBuilder expression = new StringBuilder();
@@ -66,7 +68,7 @@ public class UpDownStreamViewColumn extends ListViewColumn {
     		if (!firstElement){
     			processingString.append("&nbsp");
     		}    
-    		String linkString = new String("<a href=\"" + jobBaseUrl + prj.getUrl() + "\">" + prj.getName() + "</a>");    		
+    		String linkString = "<a href=\"" + jobBaseUrl + prj.getUrl() + "\">" + Functions.breakableString(prj.getName()) + "</a>";
     		if ((processingString.length() + prj.getName().length() + 1) < MAX_COLUMN_WIDTH) {
     			processingString.append(linkString);
     			
