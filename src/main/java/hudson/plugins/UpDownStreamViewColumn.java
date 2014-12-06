@@ -38,31 +38,31 @@ public class UpDownStreamViewColumn extends ListViewColumn {
      * @return HTML String containing the Upstream/Downstream jobs under the
      *         Job (when available).
      */
-    public String getStreamInfo(Job job, int streamType, String jobBaseUrl) {
+    public String getStreamInfo(Job job, int streamType, String rootUrl) {
         if (!(job instanceof AbstractProject<?, ?>))
             return "";
 
         AbstractProject<?, ?> project = (AbstractProject<?, ?>) job;
         if (streamType == UPSTREAM) {
-            return getHTMLProjectInfo(project.getUpstreamProjects(), jobBaseUrl);
+            return getHTMLProjectInfo(project.getUpstreamProjects(), rootUrl);
         }
         if (streamType == DOWNSTREAM) {
-            return getHTMLProjectInfo(project.getDownstreamProjects(), jobBaseUrl);
+            return getHTMLProjectInfo(project.getDownstreamProjects(), rootUrl);
         }
 
         throw new IllegalArgumentException();
     }
 
     // TODO: there is no need to trim the job name to 50 since the name is breakable
-    private String getHTMLProjectInfo(List <AbstractProject> lst, String jobBaseUrl) {
+    private String getHTMLProjectInfo(List <AbstractProject> lst, String rootUrl) {
         if (lst == null || lst.isEmpty()) return NOT_AVAILABLE;
 
         StringBuilder expression = new StringBuilder();
 
         for (AbstractProject prj: lst) {
             String linkString = String.format(
-                    "<a class=\"model-link inside\" href=\"%s%s\">%s</a>",
-                    jobBaseUrl, prj.getUrl(), Functions.breakableString(prj.getName())
+                    "<a class=\"model-link inside\" href=\"%s/%s\">%s</a>",
+                    rootUrl, prj.getUrl(), Functions.breakableString(prj.getName())
             );
 
             expression.append(linkString).append(' ');
