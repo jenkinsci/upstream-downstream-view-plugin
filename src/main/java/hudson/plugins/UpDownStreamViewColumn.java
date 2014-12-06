@@ -62,7 +62,7 @@ public class UpDownStreamViewColumn extends ListViewColumn {
         for (AbstractProject prj: lst) {
             String linkString = String.format(
                     "<a class=\"model-link inside\" href=\"%s/%s\">%s</a>",
-                    rootUrl, prj.getUrl(), Functions.breakableString(prj.getName())
+                    rootUrl, prj.getUrl(), Functions.breakableString(prj.getFullDisplayName())
             );
 
             expression.append(linkString).append(' ');
