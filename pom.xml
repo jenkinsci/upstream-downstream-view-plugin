@@ -9,7 +9,7 @@
          </parent>
         <!-- Artifact Identification -->
 	<artifactId>upstream-downstream-view</artifactId>
-	<version>1.006-SNAPSHOT</version>
+	<version>1.006</version>
 	<url>https://wiki.jenkins-ci.org/display/JENKINS/Upstream+Downstream+View+Plugin</url>
 	<packaging>hpi</packaging>
 	<name>Jenkins Upstream Downstream Column Plugin</name>
@@ -27,7 +27,7 @@
 	  <connection>scm:git:git://github.com/jenkinsci/upstream-downstream-view-plugin.git</connection>
 	  <developerConnection>scm:git:ssh://git@github.com/jenkinsci/upstream-downstream-view-plugin.git</developerConnection>
 	  <url>https://github.com/jenkinsci/upstream-downstream-view-plugin</url>
-	  <tag>HEAD</tag>
+	  <tag>upstream-downstream-view-1.006</tag>
         </scm>
 	<!--Dev Team information -->
 	<developers>
