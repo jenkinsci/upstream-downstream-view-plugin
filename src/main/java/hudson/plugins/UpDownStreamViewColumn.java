@@ -7,7 +7,6 @@ import hudson.model.AbstractProject;
 import hudson.model.Job;
 import hudson.views.ListViewColumn;
 
-import java.util.Iterator;
 import java.util.List;
 
 import net.sf.json.JSONObject;
@@ -53,12 +52,11 @@ public class UpDownStreamViewColumn extends ListViewColumn {
         throw new IllegalArgumentException();
     }
 
-    // TODO: there is no need to trim the job name to 50 since the name is breakable
-    private String getHTMLProjectInfo(List <AbstractProject> lst, String rootUrl) {
+    @SuppressWarnings("rawtypes")
+    private String getHTMLProjectInfo(List<AbstractProject> lst, String rootUrl) {
         if (lst == null || lst.isEmpty()) return NOT_AVAILABLE;
 
         StringBuilder expression = new StringBuilder();
-
         for (AbstractProject prj: lst) {
             String linkString = String.format(
                     "<a class=\"model-link inside\" href=\"%s/%s\">%s</a>",
