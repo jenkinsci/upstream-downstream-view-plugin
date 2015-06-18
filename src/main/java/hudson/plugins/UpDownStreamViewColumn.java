@@ -58,12 +58,16 @@ public class UpDownStreamViewColumn extends ListViewColumn {
 
         StringBuilder expression = new StringBuilder();
         for (AbstractProject prj: lst) {
+            if (expression.length() != 0) {
+                expression.append("<br/>");
+            }
+
             String linkString = String.format(
                     "<a class=\"model-link inside\" href=\"%s/%s\">%s</a>",
                     rootUrl, prj.getUrl(), Functions.breakableString(prj.getFullDisplayName())
             );
 
-            expression.append(linkString).append(' ');
+            expression.append(linkString);
         }
 
         return expression.toString();
